@@ -12,10 +12,14 @@ use App\Models\City;
 
 use App\Models\User;
 use App\Models\UserProfile;
+
 use Illuminate\Support\Facades\Hash;
+use Livewire\WithFileUploads;
 
 class SignUp extends Component
 {
+    use WithFileUploads;
+
     public function render()
     {
         return view('livewire.sign-up');
@@ -49,6 +53,8 @@ class SignUp extends Component
     }
 
     // Wire model binding
+    public $profile_picture;
+    public $path;
     public $first_name;
     public $middle_name;
     public $last_name;
@@ -108,7 +114,16 @@ class SignUp extends Component
         // Get the ID of the just created user
         $user_id = $user->id;
 
+        // Profile picture
+        $path = "profile_pictures/Default Profile Picture.png";
+        if ($this->profile_picture) {
+            $path = $this->profile_picture->store('profile_pictures', 'public');
+        }
+
         // Insert into user_profiles table
+
+
+
         $user->profile()->create([
             'user_id' => $user_id,
             'first_name' => $this->first_name,
@@ -120,6 +135,7 @@ class SignUp extends Component
             'marital_status_id' => $this->marital_status,
             'email_address' => $this->email_address,
             'mobile_number' => $this->mobile_number,
+            'profile_picture' => $path,
             'role_id' => 2,
         ]);
 

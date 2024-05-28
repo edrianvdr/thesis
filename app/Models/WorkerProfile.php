@@ -26,6 +26,7 @@ class WorkerProfile extends Model
         'end_time',
         'valid_id',
         'resume',
+        'status',
     ];
 
     public $timestamps = false;

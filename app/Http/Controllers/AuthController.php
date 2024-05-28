@@ -18,7 +18,7 @@ class AuthController extends Controller
     // Landing page
     public function index()
     {
-        return view('landing');
+        return view('pages.landing');
     }
 
     // Go to sign up
@@ -40,8 +40,23 @@ class AuthController extends Controller
         $credentials = $request->only('username', 'password');
 
         if (Auth::attempt($credentials)) {
-            $workers = WorkerProfile::with('user')->get();
+            // $workers = WorkerProfile::with('user')->get();
+            if (Auth::user()->profile->role_id == 1) {
+                // $workers = WorkerProfile::with(['user', 'category', 'service', 'address.city', 'address.province', 'address.region'])
+                //     ->get();
 
+                // $workers = WorkerProfile::with(['user', 'category', 'service'])
+                //     ->withCount(['bookings as completed_bookings' => function ($query) {
+                //         $query->where('status', 'Completed');
+                //     }])
+                //     ->get();
+
+
+                return redirect()->route('admin.home');
+                // return view('pages.admin-home', [
+                //         'workers' => $workers
+                //     ]);
+            }
             return redirect()->route('home');
         }
 
@@ -72,7 +87,7 @@ class AuthController extends Controller
         //     'bookings' => $bookings
         // ]);
 
-        return view('home');
+        return view('pages.home');
 
     }
 
@@ -197,7 +212,7 @@ class AuthController extends Controller
             }
         }
 
-        return view('worker-profile', compact('user', 'worker', 'userProfile', 'workerProfile', 'availableDays'));
+        return view('pages.worker-profile', compact('user', 'worker', 'userProfile', 'workerProfile', 'availableDays'));
     }
 
     // Tracking of Viewing a Worker's Profile

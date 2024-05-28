@@ -4,18 +4,14 @@
             <a
                 href="{{ route('home') }}"
                 class="flex items-center text-white text-xl font-bold px-2 border border-blue-800 focus:border-white focus:outline-none"
+                accesskey="h"
                 >
                 <img class="h-8 mr-2" src="{{ asset('images/Logo v2.png') }}" alt="{{ config('app.name') }} logo">
-                {{ config('app.name') }}
+{{ config('app.name') }}
             </a>
         </div>
         <div>
             <ul class="flex flex-col p-4 md:p-0 mt-4 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-blue-800">
-                <li>
-                    <a href="{{ route('home') }}" class="block py-2 px-3 text-white bg-blue-800 rounded hover:bg-white hover:text-blue-800 focus:bg-white focus:text-blue-800 focus:outline-none" accesskey="h">
-                        {{ Auth::user()->userProfile->first_name }} {{ Auth::user()->profile->last_name }}
-                    </a>
-                </li>
                 <li>
                     <a
                         href="{{ route('my_bookings', [
@@ -29,14 +25,26 @@
                     </a>
                 </li>
                 @if(Auth::user()->userProfile->role_id == 2)
-
-                <li>
-                  <a href="{{ route('sign_up_worker') }}" class="block py-2 px-3 text-white bg-blue-800 rounded hover:bg-white hover:text-blue-800 focus:bg-white focus:text-blue-800 focus:outline-none">Become a Worker</a>
-                </li>
+                    <li>
+                    <a href="{{ route('sign_up_worker') }}" class="inline-flex items-center py-2 px-3 text-white bg-blue-800 rounded hover:bg-white hover:text-blue-800 focus:bg-white focus:text-blue-800 focus:outline-none">Become a Worker</a>
+                    </li>
                 @endif
-                <li>
-                  <a href="{{ route('logout') }}" class="block py-2 px-3 text-white bg-blue-800 rounded hover:bg-white hover:text-blue-800 focus:bg-white focus:text-blue-800 focus:outline-none">Logout</a>
+                <li class="flex items-center">
+                    <a
+                        href="{{ route('my.account', ['feature' => 1]) }}"
+                        class="inline-flex items-center py-2 px-3 text-white bg-blue-800 rounded hover:bg-white hover:text-blue-800 focus:bg-white focus:text-blue-800 focus:outline-none"
+                        accesskey="a"
+                        >
+                        <img class="h-8 w-8 rounded-full mr-2" src="{{ asset('storage/' . (Auth::user()->userProfile->profile_picture ?? 'profile_pictures/Default Profile Picture.png')) }}" alt="Profile Picture">
+                        {{ Auth::user()->userProfile->first_name }} {{ Auth::user()->userProfile->last_name }}
+                    </a>
                 </li>
+                {{-- <li>
+                    <a href="{{ route('settings') }}" class="block py-2 px-3 text-white bg-blue-800 rounded hover:bg-white hover:text-blue-800 focus:bg-white focus:text-blue-800 focus:outline-none" accesskey="s">Settings</a>
+                </li> --}}
+                {{-- <li>
+                  <a href="{{ route('logout') }}" class="block py-2 px-3 text-white bg-blue-800 rounded hover:bg-white hover:text-blue-800 focus:bg-white focus:text-blue-800 focus:outline-none">Logout</a>
+                </li> --}}
               </ul>
         </div>
     </div>

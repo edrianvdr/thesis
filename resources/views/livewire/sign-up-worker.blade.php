@@ -58,22 +58,22 @@
         <div class="grid grid-cols-1 gap-4 my-4">
             <div>
                 <label for="description">Description</label>
-                <textarea rows=5 name="description" id="description" aria-label="Description" aria-required="true" required class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="description"></textarea>
+                <textarea rows=5 name="description" id="description" aria-label="Description" aria-required="true" required class="rounded w-full py-2 px-3" wire:model="description"></textarea>
             </div>
         </div>
 
         <div class="grid grid-cols-3 gap-4 my-4">
             <div>
                 <label for="pricing">Pricing</label>
-                <input type="number" name="pricing" id="pricing" aria-label="Pricing" aria-required="true" required class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="pricing">
+                <input type="number" name="pricing" id="pricing" aria-label="Pricing" aria-required="true" required class="rounded w-full py-2 px-3" wire:model="pricing">
             </div>
             <div>
                 <label for="minimum_duration">Minimum Duration</label>
-                <input type="number" name="minimum_duration" id="minimum_duration" aria-label="Minimum Duration" aria-required="true" required class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="minimum_duration">
+                <input type="number" name="minimum_duration" id="minimum_duration" aria-label="Minimum Duration" aria-required="true" required class="rounded w-full py-2 px-3" wire:model="minimum_duration">
             </div>
             <div>
                 <label for="maximum_duration">Maximum Duration</label>
-                <input type="number" name="maximum_duration" id="maximum_duration" aria-label="Maximum Duration" aria-required="true" required class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="maximum_duration">
+                <input type="number" name="maximum_duration" id="maximum_duration" aria-label="Maximum Duration" aria-required="true" required class="rounded w-full py-2 px-3" wire:model="maximum_duration">
             </div>
         </div>
 
@@ -116,25 +116,25 @@
         <div class="grid grid-cols-2 gap-4 my-4">
             <div>
                 <label for="start_time">Start Time</label>
-                <input type="time" name="start_time" id="start_time" aria-label="Start Time" aria-required="true" required class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="start_time">
+                <input type="time" name="start_time" id="start_time" aria-label="Start Time" aria-required="true" required class="rounded w-full py-2 px-3" wire:model="start_time">
             </div>
             <div>
                 <label for="end_time">End Time</label>
-                <input type="time" name="end_time" id="end_time" aria-label="End Time" aria-required="true" required class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="end_time">
+                <input type="time" name="end_time" id="end_time" aria-label="End Time" aria-required="true" required class="rounded w-full py-2 px-3" wire:model="end_time">
             </div>
         </div>
 
         <div class="grid grid-cols-1 gap-4 my-4">
             <div>
                 <label for="valid_id">Upload a Picture of Valid ID</label>
-                <input type="file" accept="image/*" name="valid_id" id="valid_id" aria-label="Upload Valid ID" class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="valid_id">
+                <input type="file" accept="image/*" name="valid_id" id="valid_id" aria-label="Upload Valid ID" class="rounded w-full py-2 px-3" wire:model="valid_id">
             </div>
         </div>
 
         <div class="grid grid-cols-1 gap-4 my-4">
             <div>
                 <label for="resume">Upload Resume</label>
-                <input type="file" accept=".pdf,.doc,.docx" name="resume" id="resume" aria-label="Upload Resume" class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="resume">
+                <input type="file" accept=".pdf,.doc,.docx" name="resume" id="resume" aria-label="Upload Resume" class="rounded w-full py-2 px-3" wire:model="resume">
             </div>
         </div>
 

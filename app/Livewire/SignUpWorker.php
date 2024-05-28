@@ -120,26 +120,12 @@ class SignUpWorker extends Component
             'end_time' => $this->end_time,
             'valid_id' => $this->valid_id,
             'resume' => $this->resume,
+            'status' => 1,
         ]);
 
         // Update the role_id to 3 in the user_profiles table
         $user->profile()->update(['role_id' => 3]);
 
         return redirect('/home');
-
-        // dd([
-        //     'user_id' => $user->id,
-        //     'category_id' => $this->category,
-        //     'service_id' => $this->service,
-        //     'description' => $this->description,
-        //     'pricing' => $this->pricing,
-        //     'minimum_duration' => $this->minimum_duration,
-        //     'maximum_duration' => $this->maximum_duration,
-        //     'working_days' => $working_days_string,
-        //     'start_time' => $this->start_time,
-        //     'end_time' => $this->end_time,
-        //     'valid_id' => $this->valid_id,
-        //     'resume' => $this->resume,
-        // ]);
     }
 }

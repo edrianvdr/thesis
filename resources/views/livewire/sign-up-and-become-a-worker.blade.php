@@ -13,25 +13,32 @@
 
 
     <h2 class="text-black text-3xl font-semibold font-['Open Sans']">Personal Information</h2>
+    <div class="grid grid-cols-1 gap-4 my-4">
+        <div>
+            <label for="profile_picture">Profile Picture</label>
+            <input type="file" accept="image/*" name="profile_picture" id="profile_picture" aria-label="Profile Picture" class="rounded w-full py-2 px-2" wire:model="profile_picture">
+        </div>
+    </div>
+
     <div class="grid grid-cols-3 gap-4 my-4">
         <div>
             <label for="first_name">First Name</label>
-            <input type="text" name="first_name" id="first_name" aria-label="First Name" aria-required="true" required class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="first_name">
+            <input type="text" name="first_name" id="first_name" aria-label="First Name" aria-required="true" required class="rounded w-full py-2 px-3" wire:model="first_name">
         </div>
         <div>
             <label for="middle_name">Middle Name</label>
-            <input type="text" name="middle_name" id="middle_name" aria-label="Middle Name" aria-required="true" required class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="middle_name">
+            <input type="text" name="middle_name" id="middle_name" aria-label="Middle Name" aria-required="true" required class="rounded w-full py-2 px-3" wire:model="middle_name">
         </div>
         <div>
             <label for="last_name">Last Name</label>
-            <input type="text" name="last_name" id="last_name" aria-label="Last Name" aria-required="true" required class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="last_name">
+            <input type="text" name="last_name" id="last_name" aria-label="Last Name" aria-required="true" required class="rounded w-full py-2 px-3" wire:model="last_name">
         </div>
     </div>
 
     <div class="grid grid-cols-3 gap-4 my-4">
         <div>
             <label for="suffix">Suffix</label>
-            <select name="suffix" id="suffix" class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="suffix">
+            <select name="suffix" id="suffix" class="rounded w-full py-2 px-3" wire:model="suffix">
                 <option value="">Select Suffix</option>
                 <option value="Jr.">Jr.</option>
                 <option value="Sr.">Sr.</option>
@@ -44,11 +51,11 @@
         </div>
         <div>
             <label for="birthdate">Birthdate</label>
-            <input type="date" name="birthdate" id="birthdate" aria-label="Birthdate" aria-required="true" required class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="birthdate">
+            <input type="date" name="birthdate" id="birthdate" aria-label="Birthdate" aria-required="true" required class="rounded w-full py-2 px-3" wire:model="birthdate">
         </div>
         <div>
             <label for="gender">Gender</label>
-            <select name="gender" id="gender" class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="gender">
+            <select name="gender" id="gender" class="rounded w-full py-2 px-3" wire:model="gender">
                 <option value="">Select Gender</option>
                 @foreach($genders as $gender)
                     <option value="{{ $gender->id }}">{{ $gender->gender }}</option>
@@ -60,7 +67,7 @@
     <div class="grid grid-cols-3 gap-4 my-4">
         <div>
             <label for="marital_status">Marital Status</label>
-            <select name="marital_status" id="marital_status" class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="marital_status">
+            <select name="marital_status" id="marital_status" class="rounded w-full py-2 px-3" wire:model="marital_status">
                 <option value="">Select Marital Status</option>
                 @foreach($marital_statuses as $marital_status)
                     <option value="{{ $marital_status->id }}">{{ $marital_status->marital_status }}</option>
@@ -77,7 +84,7 @@
     <div class="grid grid-cols-1 gap-4 my-4">
         <div>
             <label for="home_address">Home Address (House No. / Street / Barangay)</label>
-            <input type="text" name="home_address" id="home_address" aria-label="Home Address" aria-required="true" required class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="home_address">
+            <input type="text" name="home_address" id="home_address" aria-label="Home Address" aria-required="true" required class="rounded w-full py-2 px-3" wire:model="home_address">
         </div>
     </div>
 
@@ -141,11 +148,11 @@
     <div class="grid grid-cols-2 gap-4 my-4">
         <div class="">
             <label for="email_address">Email Address</label>
-            <input type="email" name="email_address" id="email_address" aria-label="Email Address" aria-required="true" required class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="email_address">
+            <input type="email" name="email_address" id="email_address" aria-label="Email Address" aria-required="true" required class="rounded w-full py-2 px-3" wire:model="email_address">
         </div>
         <div>
             <label for="mobile_number">Mobile Number</label>
-            <input type="text" name="mobile_number" id="mobile_number" aria-label="Mobile Number" aria-required="true" required class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="mobile_number">
+            <input type="text" name="mobile_number" id="mobile_number" aria-label="Mobile Number" aria-required="true" required class="rounded w-full py-2 px-3" wire:model="mobile_number">
         </div>
     </div>
 
@@ -157,15 +164,15 @@
     <div class="grid grid-cols-1 gap-4 my-4">
         <div>
             <label for="username">Username</label>
-            <input type="text" name="username" id="username" aria-label="Username" aria-required="true" required class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="username">
+            <input type="text" name="username" id="username" aria-label="Username" aria-required="true" required class="rounded w-full py-2 px-3" wire:model="username">
         </div>
         <div>
             <label for="password">Password</label>
-            <input type="password" name="password" id="password" aria-label="Password" aria-required="true" required class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="password">
+            <input type="password" name="password" id="password" aria-label="Password" aria-required="true" required class="rounded w-full py-2 px-3" wire:model="password">
         </div>
         <div>
             <label for="confirm_password">Confirm Password</label>
-            <input type="password" name="confirm_password" id="confirm_password" aria-label="Confirm Password" aria-required="true" required class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="confirm_password">
+            <input type="password" name="confirm_password" id="confirm_password" aria-label="Confirm Password" aria-required="true" required class="rounded w-full py-2 px-3" wire:model="confirm_password">
         </div>
     </div>
 
@@ -213,22 +220,22 @@
         <div class="grid grid-cols-1 gap-4 my-4">
             <div>
                 <label for="description">Description</label>
-                <textarea rows=5 name="description" id="description" aria-label="Description" aria-required="true" required class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="description"></textarea>
+                <textarea rows=5 name="description" id="description" aria-label="Description" aria-required="true" required class="rounded w-full py-2 px-3" wire:model="description"></textarea>
             </div>
         </div>
 
         <div class="grid grid-cols-3 gap-4 my-4">
             <div>
                 <label for="pricing">Pricing</label>
-                <input type="number" name="pricing" id="pricing" aria-label="Pricing" aria-required="true" required class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="pricing">
+                <input type="number" name="pricing" id="pricing" aria-label="Pricing" aria-required="true" required class="rounded w-full py-2 px-3" wire:model="pricing">
             </div>
             <div>
                 <label for="minimum_duration">Minimum Duration</label>
-                <input type="number" name="minimum_duration" id="minimum_duration" aria-label="Minimum Duration" aria-required="true" required class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="minimum_duration">
+                <input type="number" name="minimum_duration" id="minimum_duration" aria-label="Minimum Duration" aria-required="true" required class="rounded w-full py-2 px-3" wire:model="minimum_duration">
             </div>
             <div>
                 <label for="maximum_duration">Maximum Duration</label>
-                <input type="number" name="maximum_duration" id="maximum_duration" aria-label="Maximum Duration" aria-required="true" required class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="maximum_duration">
+                <input type="number" name="maximum_duration" id="maximum_duration" aria-label="Maximum Duration" aria-required="true" required class="rounded w-full py-2 px-3" wire:model="maximum_duration">
             </div>
         </div>
 
@@ -271,25 +278,25 @@
         <div class="grid grid-cols-2 gap-4 my-4">
             <div>
                 <label for="start_time">Start Time</label>
-                <input type="time" name="start_time" id="start_time" aria-label="Start Time" aria-required="true" required class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="start_time">
+                <input type="time" name="start_time" id="start_time" aria-label="Start Time" aria-required="true" required class="rounded w-full py-2 px-3" wire:model="start_time">
             </div>
             <div>
                 <label for="end_time">End Time</label>
-                <input type="time" name="end_time" id="end_time" aria-label="End Time" aria-required="true" required class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="end_time">
+                <input type="time" name="end_time" id="end_time" aria-label="End Time" aria-required="true" required class="rounded w-full py-2 px-3" wire:model="end_time">
             </div>
         </div>
 
         <div class="grid grid-cols-1 gap-4 my-4">
             <div>
                 <label for="valid_id">Upload a Picture of Valid ID</label>
-                <input type="file" accept="image/*" name="valid_id" id="valid_id" aria-label="Upload Valid ID" class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="valid_id">
+                <input type="file" accept="image/*" name="valid_id" id="valid_id" aria-label="Upload Valid ID" class="rounded w-full py-2 px-3" wire:model="valid_id">
             </div>
         </div>
 
         <div class="grid grid-cols-1 gap-4 my-4">
             <div>
                 <label for="resume">Upload Resume</label>
-                <input type="file" accept=".pdf,.doc,.docx" name="resume" id="resume" aria-label="Upload Resume" class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="resume">
+                <input type="file" accept=".pdf,.doc,.docx" name="resume" id="resume" aria-label="Upload Resume" class="rounded w-full py-2 px-3" wire:model="resume">
             </div>
         </div>
 

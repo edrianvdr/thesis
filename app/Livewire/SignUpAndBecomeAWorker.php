@@ -14,10 +14,14 @@ use App\Models\Service;
 
 use App\Models\User;
 use App\Models\UserProfile;
+
 use Illuminate\Support\Facades\Hash;
+use Livewire\WithFileUploads;
 
 class SignUpAndBecomeAWorker extends Component
 {
+    use WithFileUploads;
+
     public function render()
     {
         return view('livewire.sign-up-and-become-a-worker');
@@ -75,6 +79,8 @@ class SignUpAndBecomeAWorker extends Component
     }
 
     // Wire model binding
+    public $profile_picture;
+    public $path;
     public $first_name;
     public $middle_name;
     public $last_name;
@@ -165,6 +171,12 @@ class SignUpAndBecomeAWorker extends Component
         // Get the ID of the just created user
         $user_id = $user->id;
 
+        // Profile picture
+        $path = "profile_pictures/Default Profile Picture.png";
+        if ($this->profile_picture) {
+            $path = $this->profile_picture->store('profile_pictures', 'public');
+        }
+
         // Insert into user_profiles table
         $user->profile()->create([
             'user_id' => $user_id,
@@ -207,6 +219,7 @@ class SignUpAndBecomeAWorker extends Component
             'end_time' => $this->end_time,
             'valid_id' => $this->valid_id,
             'resume' => $this->resume,
+            'status' => 1,
         ]);
 
         return redirect('/');

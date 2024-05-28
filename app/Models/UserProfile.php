@@ -22,8 +22,11 @@ class UserProfile extends Model
         'marital_status_id',
         'email_address',
         'mobile_number',
+        'profile_picture',
         'role_id',
     ];
+
+    public $timestamps = [];
 
     public static function getTableData()
     {
@@ -44,6 +47,4 @@ class UserProfile extends Model
     {
         return $this->belongsTo(MaritalStatus::class, 'marital_status_id');
     }
-
-    public $timestamps = false;
 }

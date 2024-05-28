@@ -48,7 +48,7 @@ class MyBookingsController extends Controller
             $workerBookings = Booking::workerBookings($user->id, $filter_by_status);
             $workerStatusCounts = Booking::countWorkerStatuses($user->id);
 
-            return view('my-bookings', [
+            return view('pages.my-bookings', [
                 'user' => $user,
                 'bookings' => $bookings,
                 'workerBookings' => $workerBookings,
@@ -71,7 +71,7 @@ class MyBookingsController extends Controller
             ];
         }
 
-        return view('my-bookings', [
+        return view('pages.my-bookings', [
             'user' => $user,
             'bookings' => $bookings,
             'workerBookings' => $workerBookings,
