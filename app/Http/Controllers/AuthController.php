@@ -191,28 +191,33 @@ class AuthController extends Controller
      */
     public function showWorkerProfile($userId, $workerProfileId)
     {
-        $user = Auth::user();
-        $worker = User::findOrFail($userId);
+        // $user = Auth::user();
+        // $worker = User::findOrFail($userId);
 
-        // Fetch the worker's details from user_profiles table
-        $userProfile = UserProfile::where('user_id', $userId)->first();
+        // // Fetch the worker's details from user_profiles table
+        // $userProfile = UserProfile::where('user_id', $userId)->first();
 
-        // Fetch the worker's details from worker_profiles table
-        $workerProfile = WorkerProfile::where('id', $workerProfileId)->first();
+        // // Fetch the worker's details from worker_profiles table
+        // $workerProfile = WorkerProfile::where('id', $workerProfileId)->first();
 
-        // Assuming the working_days column contains a string like "1,1,1,0,0,0,0"
-        $workingDaysArray = explode(',', $workerProfile->working_days);
+        // // Assuming the working_days column contains a string like "1,1,1,0,0,0,0"
+        // $workingDaysArray = explode(',', $workerProfile->working_days);
 
-        $daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        $availableDays = [];
+        // $daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        // $availableDays = [];
 
-        foreach ($workingDaysArray as $index => $isAvailable) {
-            if ($isAvailable == 1) {
-                $availableDays[] = $daysOfWeek[$index];
-            }
-        }
+        // foreach ($workingDaysArray as $index => $isAvailable) {
+        //     if ($isAvailable == 1) {
+        //         $availableDays[] = $daysOfWeek[$index];
+        //     }
+        // }
 
-        return view('pages.worker-profile', compact('user', 'worker', 'userProfile', 'workerProfile', 'availableDays'));
+        // return view('pages.worker-profile', compact('user', 'worker', 'userProfile', 'workerProfile', 'availableDays'));
+        return view('pages.worker-profile', [
+            'userId' => $userId,
+            'workerProfileId' => $workerProfileId,
+        ]);
+
     }
 
     // Tracking of Viewing a Worker's Profile
@@ -255,15 +260,25 @@ class AuthController extends Controller
             $validatedData = $request->validate([
                 'user_id' => 'required',
                 'worker_id' => 'required',
+                'specific_service_id' => 'required',
                 'booking_date' => 'required|date',
                 'booking_time' => 'required',
                 'booking_notes' => 'required|string',
             ]);
+            // dd([
+            //     'user_id' => $request->user_id,
+            //     'worker_id' => $request->worker_id,
+            //     'specific_service_id' => $request->specific_service_id,
+            //     'booking_time' => $request->booking_time,
+            //     'booking_notes' => $request->booking_notes,
+            // ]);
+
 
             // Insert into bookings table
             $booking = new Booking();
             $booking->user_id = $validatedData['user_id'];
             $booking->worker_id = $validatedData['worker_id'];
+            $booking->specific_service_id = $validatedData['specific_service_id'];
             $booking->date = $validatedData['booking_date'];
             $booking->time = $validatedData['booking_time'];
             $booking->notes = $validatedData['booking_notes'];

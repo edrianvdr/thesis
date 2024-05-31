@@ -12,6 +12,7 @@ use App\Models\WorkerProfile;
 use App\Models\WorkerProfileView;
 use App\Models\Booking;
 use App\Models\Commission;
+use App\Models\SpecificService;
 
 use Illuminate\Support\Facades\Hash;
 
@@ -100,6 +101,30 @@ class MyAccountController extends Controller
 
         return back()->with('success', 'Proof of payment uploaded successfully.');
     }
+
+    // [4] Add New Specific Service
+    public function addNewSpecificService(Request $request)
+    {
+        // Validate the request data
+        $request->validate([
+            'specific_service' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric|min:0',
+            'duration' => 'required|integer|min:0',
+        ]);
+
+        // Create the specific service
+        SpecificService::create([
+            'worker_id' => Auth::user()->workerProfile->id,
+            'specific_service' => $request->specific_service,
+            'description' => $request->description,
+            'price' => $request->price,
+            'duration' => $request->duration,
+        ]);
+
+        return redirect()->route('my.account', ['feature' => 4])->with('success', 'Specific service added successfully.');
+    }
+
 
 
 }

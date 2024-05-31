@@ -41,21 +41,22 @@
             <div class="bg-white rounded-lg shadow-md mb-4 p-4 border-b border-gray-500">
                 <div class="md:grid md:grid-cols-4 md:text-center border-b border-gray-300 py-4">
                     <div>
-                        <p class="text-dark">{{ $workerBooking->user->userProfile->first_name }} {{ $workerBooking->user->userProfile->last_name }}</p>
-                    </div>
-                    <div>
                         <p class="text-dark">{{ $workerBooking->workerProfile->category->category}}</p>
                     </div>
                     <div>
                         <p class="text-dark">{{ $workerBooking->workerProfile->service->service}}</p>
                     </div>
                     <div>
-                        <p class="text-gray-600 text-xl font-bold">₱{{ $workerBooking->workerProfile->pricing }}</p>
+                        <p class="text-gray-600">₱{{ $workerBooking->specificService->specific_service }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-600 text-xl font-bold">₱{{ $workerBooking->specificService->price }}</p>
                     </div>
                 </div>
 
                 <div class="md:grid md:grid-cols-2 my-4">
                     <div>
+                        <p class="mb-2 font-bold text-lg text-dark">{{ $workerBooking->user->userProfile->first_name }} {{ $workerBooking->user->userProfile->last_name }}</p>
                         <p class="text-gray-800 pr-4">
                             Home Address: {{ $workerBooking->user->address->home_address }},
                             {{ $workerBooking->user->address->city->city }},

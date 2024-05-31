@@ -12,6 +12,7 @@ class Booking extends Model
     protected $fillable = [
         'user_id',
         'worker_id',
+        'specific_service_id',
         'date',
         'time',
         'notes',
@@ -39,6 +40,11 @@ class Booking extends Model
     public function worker()
     {
         return $this->belongsTo(WorkerProfile::class, 'worker_id');
+    }
+
+    public function specificService()
+    {
+        return $this->belongsTo(SpecificService::class, 'specific_service_id');
     }
 
     // Query

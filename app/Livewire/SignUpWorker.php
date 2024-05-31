@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
 use App\Models\Service;
 
-use App\Models\UserProfile;
 use App\Models\User;
+use App\Models\UserProfile;
 
 class SignUpWorker extends Component
 {

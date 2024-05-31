@@ -11,6 +11,8 @@ use App\Models\User;
 use App\Models\WorkerProfile;
 use App\Models\WorkerProfileView;
 use App\Models\Booking;
+use App\Models\SpecificService;
+
 
 use App\Models\Category;
 use App\Models\Service;
@@ -37,61 +39,78 @@ class HomePage extends Component
     public $mvc_same_province_workers;
     public $mvc_same_region_workers;
 
+    // Specific Service
+    public $specific_service;
+
+
 
     public function mount()
-    {
-        // Category and Service
-        $this->categories = Category::all();
-        $this->services = collect();
+{
+    // Category and Service
+    $this->categories = Category::all();
+    $this->services = collect();
 
-        $this->random_value = rand(1, 2);
-        // 1 = sort by Ratings
-        // 2 = sort by Completed Bookings
+    $this->random_value = rand(1, 2); // Random value to determine sorting criteria
 
-        // Recommend workers under the user's most viewed category
-        $this->mostViewedCategory = WorkerProfile::getMostViewedCategory();
-        if ($this->mostViewedCategory == "") {
-            //Ifnf user hasn't viewed any worker's profile yet, display all workers
-            if ($this->random_value == 1) {
-                $this->mostViewedCategory = "Most Rated";
-                $this->workers = WorkerProfile::allWorkersByRatings();
-            }
-            else if ($this->random_value == 2) {
-                $this->mostViewedCategory = "Most Completed Bookings";
-                $this->workers = WorkerProfile::allWorkersByCompletedBookings();
-            }
-        }
-        else if ($this->mostViewedCategory != "") {
-            if ($this->random_value == 1) {
-                $this->mvc_same_city_workers = WorkerProfile::underMostViewedCategoryInSameCityByRatings();
-                $this->mvc_same_province_workers = WorkerProfile::underMostViewedCategoryInSameProvinceByRatings();
-                $this->mvc_same_region_workers = WorkerProfile::underMostViewedCategoryInSameRegionByRatings();
-
-                $this->workers = $this->mvc_same_city_workers
-                    ->concat($this->mvc_same_province_workers);
-                    // ->concat($this->mvc_same_region_workers);
-            }
-            else if ($this->random_value == 2) {
-                $this->mvc_same_city_workers = WorkerProfile::underMostViewedCategoryInSameCityByCompletedBookings();
-                $this->mvc_same_province_workers = WorkerProfile::underMostViewedCategoryInSameProvinceByCompletedBookings();
-                $this->mvc_same_region_workers = WorkerProfile::underMostViewedCategoryInSameRegionByCompletedBookings();
-
-                $this->workers = $this->mvc_same_city_workers
-                    ->concat($this->mvc_same_province_workers);
-                    // ->concat($this->mvc_same_region_workers);
-            }
-        }
-
+    // Recommend workers under the user's most viewed category
+    $this->mostViewedCategory = WorkerProfile::getMostViewedCategory();
+    if ($this->mostViewedCategory == "") {
+        // If user hasn't viewed any worker's profile yet, display all workers
         if ($this->random_value == 1) {
-            // Workers in Same City
-            $this->same_city_workers = WorkerProfile::inSameCityAsLoggedInUserByRating();
-            // Workers in Same Region except same city
-            $this->same_region_workers = WorkerProfile::inSameRegionAsLoggedInUserByRating();
+            $this->mostViewedCategory = "Most Rated";
+            $this->workers = WorkerProfile::allWorkersByRatings();
         } else if ($this->random_value == 2) {
-            $this->same_city_workers = WorkerProfile::inSameCityAsLoggedInUserByCompletedBookings();
-            $this->same_region_workers = WorkerProfile::inSameRegionAsLoggedInUserByCompletedBookings();
+            $this->mostViewedCategory = "Most Completed Bookings";
+            $this->workers = WorkerProfile::allWorkersByCompletedBookings();
+        }
+    } else {
+        if ($this->random_value == 1) {
+            $this->mvc_same_city_workers = WorkerProfile::underMostViewedCategoryInSameCityByRatings();
+            $this->mvc_same_province_workers = WorkerProfile::underMostViewedCategoryInSameProvinceByRatings();
+            $this->mvc_same_region_workers = WorkerProfile::underMostViewedCategoryInSameRegionByRatings();
+
+            $this->workers = $this->mvc_same_city_workers
+                ->concat($this->mvc_same_province_workers)
+                ->concat($this->mvc_same_region_workers);
+
+            $this->setPricesForWorkers($this->workers);
+        } else if ($this->random_value == 2) {
+            $this->mvc_same_city_workers = WorkerProfile::underMostViewedCategoryInSameCityByCompletedBookings();
+            $this->mvc_same_province_workers = WorkerProfile::underMostViewedCategoryInSameProvinceByCompletedBookings();
+            $this->mvc_same_region_workers = WorkerProfile::underMostViewedCategoryInSameRegionByCompletedBookings();
+
+            $this->workers = $this->mvc_same_city_workers
+                ->concat($this->mvc_same_province_workers)
+                ->concat($this->mvc_same_region_workers);
+
+            $this->setPricesForWorkers($this->workers);
         }
     }
+
+    // Workers in Same City
+    $this->same_city_workers = WorkerProfile::inSameCityAsLoggedInUserByRating();
+    $this->setPricesForWorkers($this->same_city_workers);
+
+    // Workers in Same Region except same city
+    $this->same_region_workers = WorkerProfile::inSameRegionAsLoggedInUserByRating();
+    $this->setPricesForWorkers($this->same_region_workers);
+}
+
+// Method to set lowest and highest prices for workers
+private function setPricesForWorkers($workers)
+{
+    $workers->each(function ($worker) {
+        $specificServices = SpecificService::where('worker_id', $worker->id)->get();
+
+        $prices = $specificServices->pluck('price')->toArray();
+        $lowestPrice = count($prices) > 0 ? min($prices) : 0;
+        $highestPrice = count($prices) > 0 ? max($prices) : 0;
+
+        $worker->lowest_price = $lowestPrice;
+        $worker->highest_price = $highestPrice;
+    });
+}
+
 
     // Filter by Category
     public function filterByCategory()

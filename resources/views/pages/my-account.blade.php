@@ -31,6 +31,11 @@
                         Pay Commission
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('my.account', ['feature' => 4]) }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">
+                        Add New Specific Service
+                    </a>
+                </li>
 
                 <li>
                     <a href="{{ route('logout') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">
@@ -47,6 +52,8 @@
                 @include('pages.my-account-change-password')
             @elseif ($feature == 3)
                 @include('pages.my-account-pay-commission')
+            @elseif ($feature == 4)
+                @include('pages.my-account-add-new-specific-service')
             @endif
         </section>
     </div>

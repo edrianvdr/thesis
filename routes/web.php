@@ -64,3 +64,5 @@ Route::get('/my-account', [MyAccountController::class, 'index'])->name('my.accou
     Route::post('/update-password', [MyAccountController::class, 'updatePassword'])->name('update.password');
     // [3] Pay Commission
     Route::post('/upload-proof-of-payment', [MyAccountController::class, 'uploadProofOfPayment'])->name('upload.proof_of_payment');
+    // [4] Add New Specific Service
+    Route::post('/add-new-specific-service', [MyAccountController::class, 'addNewSpecificService'])->name('add.new_specific_service');

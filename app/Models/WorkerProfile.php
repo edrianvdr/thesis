@@ -54,6 +54,12 @@ class WorkerProfile extends Model
         return $this->hasMany(Booking::class, 'worker_id', 'id');
     }
 
+    public function specificServices()
+    {
+        return $this->hasMany(SpecificService::class, 'worker_id', 'id');
+    }
+
+
     // Query
     // [1] All Workers by Ratings
     public static function allWorkersByRatings()

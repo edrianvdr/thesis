@@ -22,7 +22,13 @@
                                 <h3 class="text-lg font-bold mb-2 text-center">{{ $worker->user->userProfile->first_name }} {{ $worker->user->userProfile->last_name }}</h3>
                                 <p class="text-gray-600 text-center mb-2">{{ $worker->category->category }}</p>
                                 <p class="text-gray-600 text-center mb-4">{{ $worker->service->service }}</p>
-                                <p class="text-dark text-xl font-bold text-center mb-2">₱{{ $worker->pricing }}</p>
+                                <p class="text-dark text-xl font-bold text-center text-blue-900  mb-2">
+                                    @if ($worker->lowest_price != $worker->highest_price)
+                                        ₱{{ $worker->lowest_price }} to ₱{{ $worker->highest_price }}
+                                    @else
+                                        ₱{{ $worker->lowest_price }}
+                                    @endif
+                                </p>
 
                                 <div class="flex items-center text-center justify-center text-gray-600 mb-4">
                                     <svg class="w-5 h-5 text-center items-center" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
