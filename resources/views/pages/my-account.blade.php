@@ -13,8 +13,9 @@
         </div>
     @endif
 
-    <div class="flex space-x-8">
-        <aside class="w-1/4 bg-white p-4 shadow-md rounded-lg">
+    <div class="flex flex-col lg:flex-row lg:space-x-8">
+        <aside class="w-full lg:w-1/4 bg-white p-4 shadow-md rounded-lg mb-4 lg:mb-0">
+            <h3 class="text-lg font-bold mb-2">User Settings</h3>
             <ul class="space-y-2">
                 <li>
                     <a href="{{ route('my.account', ['feature' => 1]) }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">
@@ -27,25 +28,30 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('my.account', ['feature' => 3]) }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">
-                        Pay Commission
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('my.account', ['feature' => 4]) }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">
-                        Add New Specific Service
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{ route('logout') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">
+                    <a href="{{ route('logout') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 rounded" accesskey="l">
                         Logout
                     </a>
                 </li>
             </ul>
+
+            @if (Auth::user()->userProfile->role_id == 3)
+                <h3 class="text-lg font-bold mt-4 mb-2">Worker Settings</h3>
+                <ul class="space-y-2">
+                    <li>
+                        <a href="{{ route('my.account', ['feature' => 3]) }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">
+                            Pay Commission
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('my.account', ['feature' => 4]) }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">
+                            Add New Specific Service
+                        </a>
+                    </li>
+                </ul>
+            @endif
         </aside>
 
-        <section class="w-3/4 bg-white p-6 shadow-md rounded-lg">
+        <section class="w-full lg:w-3/4 bg-white p-6 shadow-md rounded-lg">
             @if ($feature == 1)
                 @include('pages.my-account-change-profile-picture')
             @elseif ($feature == 2)

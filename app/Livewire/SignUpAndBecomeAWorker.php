@@ -14,6 +14,9 @@ use App\Models\Service;
 
 use App\Models\User;
 use App\Models\UserProfile;
+use App\Models\WorkerProfile;
+use App\Models\SpecificService;
+
 
 use Illuminate\Support\Facades\Hash;
 use Livewire\WithFileUploads;
@@ -101,10 +104,10 @@ class SignUpAndBecomeAWorker extends Component
     public $confirm_password;
 
     // Wir model binding
+    public $specific_service;
+    public $price;
+    public $duration;
     public $description;
-    public $pricing;
-    public $minimum_duration;
-    public $maximum_duration;
     public $working_days = [];
     public $start_time;
     public $end_time;
@@ -127,12 +130,13 @@ class SignUpAndBecomeAWorker extends Component
             'city' => 'required',
             'email_address' => ['required', 'email'],
             'mobile_number' => ['required', 'regex:/^9\d{9}$/'],
+
             'category' => 'required',
             'service' => 'required',
+            'specific_service' => 'required',
+            'price' => 'required',
+            'duration' => 'required',
             'description' => 'required',
-            'pricing' => 'required',
-            'minimum_duration' => 'required',
-            'maximum_duration' => 'required',
             'working_days' => 'required',
             'start_time' => 'required',
             'end_time' => 'required',
@@ -153,10 +157,10 @@ class SignUpAndBecomeAWorker extends Component
 
             'category.required' => 'Category is required',
             'service.required' => 'Service is required',
+            'specific_service.required' => 'Description is required',
+            'price.required' => 'Description is required',
+            'duration.required' => 'Description is required',
             'description.required' => 'Description is required',
-            'pricing.required' => 'Pricing is required',
-            'minimum_duration.required' => 'Minimum duration is required',
-            'maximum_duration.required' => 'Maximum duration is required',
             'working_days.required' => 'Working days is required',
             'start_time.required' => 'Start time is required',
             'end_time.required' => 'End time is required',
@@ -189,6 +193,7 @@ class SignUpAndBecomeAWorker extends Component
             'marital_status_id' => $this->marital_status,
             'email_address' => $this->email_address,
             'mobile_number' => $this->mobile_number,
+            'profile_picture' => $path,
             'role_id' => 3,
         ]);
 
@@ -206,14 +211,10 @@ class SignUpAndBecomeAWorker extends Component
         }, $this->working_days));
 
         // Insert into worker_profiles
-        $user->workerprofile()->create([
+        $workerProfile = $user->workerprofile()->create([
             'user_id' => $user_id,
             'category_id' => $this->category,
             'service_id' => $this->service,
-            'description' => $this->description,
-            'pricing' => $this->pricing,
-            'minimum_duration' => $this->minimum_duration,
-            'maximum_duration' => $this->maximum_duration,
             'working_days' => $working_days_string,
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
@@ -222,6 +223,17 @@ class SignUpAndBecomeAWorker extends Component
             'status' => 1,
         ]);
 
+        // Insert into specific_services table
+        $workerProfile->specificService()->create([
+            'worker_id' => $workerProfile->id,
+            'specific_service' => $this->specific_service,
+            'description' => $this->description,
+            'price' => $this->price,
+            'duration' => $this->duration,
+        ]);
+
+
         return redirect('/');
     }
+
 }

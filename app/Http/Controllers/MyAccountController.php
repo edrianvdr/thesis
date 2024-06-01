@@ -22,18 +22,32 @@ class MyAccountController extends Controller
     {
         $feature = $request->query('feature');
 
-        $workerProfile = Auth::user()->workerProfile;
-
-        if ($workerProfile) {
-            $commissions = Commission::where('worker_id', $workerProfile->id)->get();
-        } else {
-            $commissions = [];
+        // Admin & Client
+        if (Auth::user()->userProfile->role_id != 3)
+        {
+            return view('pages.my-account', [
+                'feature' => $feature
+            ]);
         }
+        // Worker
+        else if (Auth::user()->userProfile->role_id == 3)
+        {
+            $workerProfile = Auth::user()->workerProfile;
 
-        return view('pages.my-account', [
-            'feature' => $feature,
-            'commissions' => $commissions
-        ]);
+            if ($workerProfile) {
+                $commissions = Commission::where('worker_id', $workerProfile->id)->get();
+            } else {
+                $commissions = [];
+            }
+
+            $specificServices = Auth::user()->workerProfile->specificServices;
+
+            return view('pages.my-account', [
+                'feature' => $feature,
+                'commissions' => $commissions,
+                'specificServices' => $specificServices
+            ]);
+        }
     }
 
     // [1] Update Profile

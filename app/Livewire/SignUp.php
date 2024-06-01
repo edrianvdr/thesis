@@ -121,9 +121,6 @@ class SignUp extends Component
         }
 
         // Insert into user_profiles table
-
-
-
         $user->profile()->create([
             'user_id' => $user_id,
             'first_name' => $this->first_name,

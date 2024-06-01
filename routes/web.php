@@ -21,12 +21,21 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // [1] Admin
 Route::get('/admin/home', [AdminController::class, 'index'])->name('admin.home');
-// Deactivate Worker
-Route::post('/admin/deactivate-worker/{id}', [AdminController::class, 'deactivateWorker'])->name('admin.deactivateWorker');
-// Reactivate Worker
-Route::post('/admin/reactivate-worker/{id}', [AdminController::class, 'reactivateWorker'])->name('admin.reactivateWorker');
-// Request Commission Payment
-Route::post('/admin/request-commission-payment-all', [AdminController::class, 'requestCommissionPaymentAll'])->name('admin.requestCommissionPaymentAll');
+    // [1] Worker Status Management
+    // Deactivate Worker
+    Route::post('/admin/deactivate-worker/{id}', [AdminController::class, 'deactivateWorker'])->name('admin.deactivateWorker');
+    // Reactivate Worker
+    Route::post('/admin/reactivate-worker/{id}', [AdminController::class, 'reactivateWorker'])->name('admin.reactivateWorker');
+    // [2] Commission Management
+    // Request Commission Payment
+    Route::post('/admin/request-commission-payment-all', [AdminController::class, 'requestCommissionPaymentAll'])->name('admin.requestCommissionPaymentAll');
+    // Route::post('/admin/request-commission-payment-all/{id}', [AdminController::class, 'requestCommissionPayment'])->name('admin.requestCommissionPaymentAll');
+
+    // Verify Proof of Payment
+    Route::post('/admin/verify-commission/{id}', [AdminController::class, 'verifyCommission'])->name('admin.verifyCommission');
+    // Reject Proof of Payment
+    Route::post('/admin/reject-commission/{id}', [AdminController::class, 'rejectCommission'])->name('admin.rejectCommission');
+
 
 
 // Home page - landing page after Login

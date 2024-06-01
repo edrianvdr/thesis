@@ -40,7 +40,12 @@
                         <label
                             role="radio"
                             tabindex="0"
-                            class="inline-flex items-center cursor-pointer bg-white rounded-md border-2 border-gray-300 p-3 mb-2 hover:border-gray-500 focus:border-gray-500 focus:outline-none @if ($selected_specific_service_id == $specificService->id) border-blue-800 @endif"
+                            class="inline-flex items-center cursor-pointer rounded-md border-2 p-3 mb-2 focus:outline-none
+                                @if ($selected_specific_service_id == $specificService->id)
+                                    bg-blue-100 border-blue-800
+                                @else
+                                    bg-white border-gray-300 hover:border-gray-500 focus:border-gray-500
+                                @endif"
                             wire:click="selectSpecificService({{ $specificService->id }})"
                         >
                             <input
@@ -53,6 +58,8 @@
                             <span class="ml-2">{{ $specificService->specific_service }}</span>
                         </label>
                     @endforeach
+
+
                 </ul>
             </div>
 

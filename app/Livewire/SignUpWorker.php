@@ -3,14 +3,22 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
+use App\Models\Region;
+use App\Models\Province;
+use App\Models\City;
 use App\Models\Category;
 use App\Models\Service;
 
 use App\Models\User;
 use App\Models\UserProfile;
+use App\Models\WorkerProfile;
+use App\Models\SpecificService;
+
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Livewire\WithFileUploads;
 
 class SignUpWorker extends Component
 {
@@ -63,10 +71,10 @@ class SignUpWorker extends Component
     }
 
     // Wir model binding
+    public $specific_service;
+    public $price;
+    public $duration;
     public $description;
-    public $pricing;
-    public $minimum_duration;
-    public $maximum_duration;
     public $working_days = [];
     public $start_time;
     public $end_time;
@@ -81,20 +89,20 @@ class SignUpWorker extends Component
         $validatedData = $this->validate([
             'category' => 'required',
             'service' => 'required',
+            'specific_service' => 'required',
+            'price' => 'required',
+            'duration' => 'required',
             'description' => 'required',
-            'pricing' => 'required',
-            'minimum_duration' => 'required',
-            'maximum_duration' => 'required',
             'working_days' => 'required',
             'start_time' => 'required',
             'end_time' => 'required',
         ], [
             'category.required' => 'Category is required',
             'service.required' => 'Service is required',
+            'specific_service.required' => 'Description is required',
+            'price.required' => 'Description is required',
+            'duration.required' => 'Description is required',
             'description.required' => 'Description is required',
-            'pricing.required' => 'Pricing is required',
-            'minimum_duration.required' => 'Minimum duration is required',
-            'maximum_duration.required' => 'Maximum duration is required',
             'working_days.required' => 'Working days is required',
             'start_time.required' => 'Start time is required',
             'end_time.required' => 'End time is required',
@@ -111,16 +119,21 @@ class SignUpWorker extends Component
             'user_id' => $user->id,
             'category_id' => $this->category,
             'service_id' => $this->service,
-            'description' => $this->description,
-            'pricing' => $this->pricing,
-            'minimum_duration' => $this->minimum_duration,
-            'maximum_duration' => $this->maximum_duration,
             'working_days' => $working_days_string,
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
             'valid_id' => $this->valid_id,
             'resume' => $this->resume,
             'status' => 1,
+        ]);
+
+        // Insert into specific_services table
+        $user->workerprofile->specificService()->create([
+            'worker_id' => $user->workerprofile->id,
+            'specific_service' => $this->specific_service,
+            'description' => $this->description,
+            'price' => $this->price,
+            'duration' => $this->duration,
         ]);
 
         // Update the role_id to 3 in the user_profiles table

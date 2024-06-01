@@ -6,6 +6,51 @@
     </div>
 @endif
 
+<!-- Table displaying the logged-in user's specific services -->
+<div class="bg-white p-6 shadow-md rounded-lg mb-6">
+    <h3 class="text-xl font-bold mb-4">Your Specific Services</h3>
+    @if($specificServices->isEmpty())
+        <p>No specific services found.</p>
+    @else
+        <table class="min-w-full leading-normal">
+            <thead>
+                <tr>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Service
+                    </th>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Description
+                    </th>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Price
+                    </th>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Duration (minutes)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($specificServices as $specificService)
+                    <tr>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            {{ $specificService->specific_service }}
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            {{ $specificService->description }}
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            ₱{{ $specificService->price }}
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            {{ $specificService->duration }}
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endif
+</div>
+
 <div class="bg-white p-6 shadow-md rounded-lg">
     <form
         action="{{ route('add.new_specific_service') }}"

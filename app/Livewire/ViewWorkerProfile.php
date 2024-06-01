@@ -72,5 +72,4 @@ class ViewWorkerProfile extends Component
     {
         return view('livewire.view-worker-profile');
     }
-
 }

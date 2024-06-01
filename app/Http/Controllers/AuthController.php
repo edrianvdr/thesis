@@ -42,20 +42,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             // $workers = WorkerProfile::with('user')->get();
             if (Auth::user()->profile->role_id == 1) {
-                // $workers = WorkerProfile::with(['user', 'category', 'service', 'address.city', 'address.province', 'address.region'])
-                //     ->get();
-
-                // $workers = WorkerProfile::with(['user', 'category', 'service'])
-                //     ->withCount(['bookings as completed_bookings' => function ($query) {
-                //         $query->where('status', 'Completed');
-                //     }])
-                //     ->get();
-
-
-                return redirect()->route('admin.home');
-                // return view('pages.admin-home', [
-                //         'workers' => $workers
-                //     ]);
+                return redirect()->route('admin.home', ['feature' => 1]);
             }
             return redirect()->route('home');
         }

@@ -61,9 +61,6 @@
             </div>
         </div>
 
-
-
-
         {{-- Default display --}}
         @if ($is_searching == 0)
             {{-- All workers / workers under most viewed category --}}

@@ -53,12 +53,19 @@ class WorkerProfile extends Model
     {
         return $this->hasMany(Booking::class, 'worker_id', 'id');
     }
-
+    public function commissions()
+    {
+        return $this->hasMany(Commission::class, 'worker_id');
+    }
     public function specificServices()
     {
         return $this->hasMany(SpecificService::class, 'worker_id', 'id');
     }
+    public function specificService()
+    {
+        return $this->hasOne(SpecificService::class, 'worker_id');
 
+    }
 
     // Query
     // [1] All Workers by Ratings
@@ -732,5 +739,77 @@ class WorkerProfile extends Model
 
         return $sortedWorkers->values();
     }
+
+    // Query for Admin Features
+    // Count bookings with completed status
+    public function completedBookingsCount()
+    {
+        return $this->bookings()->where('status', 'Completed')->count();
+    }
+
+    // Lowest price of specific services
+    public function lowestPriceOfSpecificServices()
+    {
+        return $this->specificServices()->min('price');
+    }
+
+    // Highest price of specific services
+    public function highestPriceOfSpecificServices()
+    {
+        return $this->specificServices()->max('price');
+    }
+
+    // Commission to pay based on completed bookings
+    public function commissionToPay()
+    {
+        // 10% commission
+        $commissionRate = 0.10;
+
+        // Find all completed bookings for this worker
+        $completedBookings = $this->bookings()
+            ->where('status', 'Completed')
+            ->with('specificService')
+            ->get();
+
+        // Calculate total commission to pay
+        $totalCommission = $completedBookings->sum(function ($booking) use ($commissionRate) {
+            // Get the price of the specific service linked to the completed booking
+            if ($booking->specificService) {
+                return $booking->specificService->price * $commissionRate;
+            }
+            return 0;
+        });
+
+        return round($totalCommission, 2);
+    }
+
+    // Verified Payment
+    public function getVerifiedPaymentAttribute()
+    {
+        return $this->commissions()->where('is_verified', 1)->sum('amount');
+    }
+
+    // Request Commission Payment
+    public function requestCommissionPayment()
+    {
+        $difference = $this->commissionToPay() - $this->verified_payment;
+
+        if ($difference > 0) {
+            // Create new commission request
+            $commission = new Commission();
+            $commission->worker_id = $this->id;
+            $commission->amount = $difference;
+            $commission->is_paid = 0;
+            $commission->is_verified = 0;
+            $commission->requested_at = Carbon::now();
+            $commission->save();
+
+            return true;
+        }
+
+        return false;
+    }
+
+
 
 }
