@@ -49,8 +49,3 @@
         </div>
     </div>
 </nav>
-
-{{-- form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-    @csrf
-    <button type="submit">Logout</button>
-</form> --}}

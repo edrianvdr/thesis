@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\UserProfile;
 use App\Models\WorkerProfile;
 use App\Models\SpecificService;
+use App\Models\Booking;
 
 class ViewWorkerProfile extends Component
 {
@@ -25,6 +26,7 @@ class ViewWorkerProfile extends Component
     public $availableDays;
     public $specificServices;
     public $selectedSpecificService;
+    public $reviews;
 
     public function mount($userId, $workerProfileId)
     {
@@ -34,13 +36,13 @@ class ViewWorkerProfile extends Component
         $this->user = Auth::user();
         $this->worker = User::findOrFail($userId);
 
-        // Fetch the worker's details from user_profiles table
+        // Worker's details - user_profiles
         $this->userProfile = UserProfile::where('user_id', $userId)->first();
 
-        // Fetch the worker's details from worker_profiles table
+        // Worker's details - worker_profiles
         $this->workerProfile = WorkerProfile::where('id', $workerProfileId)->first();
 
-        // Assuming the working_days column contains a string like "1,1,1,0,0,0,0"
+        // Working Days
         $workingDaysArray = explode(',', $this->workerProfile->working_days);
         $daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         $this->availableDays = [];
@@ -51,8 +53,14 @@ class ViewWorkerProfile extends Component
             }
         }
 
-        // Fetch specific services for the worker
+        // Specific services
         $this->specificServices = SpecificService::where('worker_id', $workerProfileId)->get();
+
+        // Reviews
+        $this->reviews = Booking::where('worker_id', $workerProfileId)
+            ->whereNotNull('rating')
+            ->orderBy('completed_datetime', 'desc')
+            ->get();
     }
 
     public $selected_specific_service_id;

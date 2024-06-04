@@ -112,4 +112,52 @@
             </button>
         </form>
     </div>
+
+    <section class="bg-gray-100 py-12">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8">Customer Reviews</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @foreach($reviews as $review)
+                    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                        <div class="px-6 py-4">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center">
+                                    <img
+                                        class="h-10 w-10 rounded-full mr-4"
+                                        src="{{ asset('storage/' . $review->user->userProfile->profile_picture) }}"
+                                        alt="{{ $review->user->userProfile->first_name }} {{ $review->user->userProfile->last_name }}'s profile_picture"
+                                    >
+                                    <div>
+                                        <p class="text-gray-900 font-bold">
+                                            {{ $review->user->userProfile->first_name }} {{ $review->user->userProfile->last_name }}
+                                        </p>
+                                        <p class="text-gray-600 text-sm">
+                                            {{ $review->specificService->specific_service }}
+                                        </p>
+                                        <div class="flex items-center">
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                @if ($i <= $review->rating)
+                                                    <svg class="h-5 w-5 fill-current text-yellow-500" viewBox="0 0 24 24">
+                                                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2M12 15.33L14.67 17.41L13.79 14.39L16.39 12.73L13.35 12.33L12 9.5L10.65 12.33L7.61 12.73L10.21 14.39L9.33 17.41L12 15.33Z" />
+                                                    </svg>
+                                                @else
+                                                    <svg class="h-5 w-5 fill-current text-gray-400" viewBox="0 0 24 24">
+                                                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2M12 15.33L14.67 17.41L13.79 14.39L16.39 12.73L13.35 12.33L12 9.5L10.65 12.33L7.61 12.73L10.21 14.39L9.33 17.41L12 15.33Z" />
+                                                    </svg>
+                                                @endif
+                                            @endfor
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <p class="text-gray-700 text-base mt-4">
+                                {{ $review->review }}
+                            </p>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
 </div>
