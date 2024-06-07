@@ -137,11 +137,6 @@ public function filterByCategory()
         $query->where('category_id', $this->category);
         $category = Category::find($this->category);
         $this->mostViewedCategory = $category ? $category->category : null;
-
-        $this->workers = $query->get();
-        $this->setPricesForWorkers($this->workers);
-    } else {
-        // Your existing logic...
     }
 
     if (!empty($this->search)) {
@@ -156,11 +151,32 @@ public function filterByCategory()
                 }
             });
         });
-
-        $this->workers = $query->get();
-        $this->setPricesForWorkers($this->workers);
     }
+
+    // Workers with Ratings
+    $this->workers = $query->with(['user.userProfile', 'address', 'bookings' => function ($query) {
+        $query->where('status', 'Completed'); // Filter bookings by completed status
+    }])->get();
+
+    // Calculate average rating and completed bookings count for each worker
+    $this->workers->each(function ($worker) {
+        $bookings = $worker->bookings;
+
+        if ($bookings->isNotEmpty()) {
+            $worker->average_rating = $bookings->avg('rating');
+            $worker->completed_count = $bookings->count();
+        } else {
+            $worker->average_rating = 0; // Set rating to 0 if there are no bookings
+            $worker->completed_count = 0; // Set count to 0 if there are no bookings
+        }
+    });
+
+    // Sort workers by average rating in descending order
+    $this->workers = $this->workers->sortByDesc('average_rating')->values();
+
+    $this->setPricesForWorkers($this->workers);
 }
+
 
 // Filter by Service
 public function filterByService()
@@ -171,7 +187,7 @@ public function filterByService()
         $query->where('service_id', $this->service);
 
         $service = Service::find($this->service);
-        $this->mostViewedCategory = $service ? $service->service : null;
+        $this->mostViewedCategory = $service ? $service->category->category . " > " . $service->service : null;
 
         $this->workers = $query->get();
         $this->setPricesForWorkers($this->workers);
@@ -183,8 +199,6 @@ public function filterByService()
 
         $this->workers = $query->get();
         $this->setPricesForWorkers($this->workers);
-    } else {
-        // Your existing logic...
     }
 
     if (!empty($this->search)) {
@@ -224,10 +238,27 @@ public function searchWorker()
             });
         });
 
-        $this->workers = $query->get();
+        $this->workers = $query->with(['user.userProfile', 'address', 'bookings' => function ($query) {
+            $query->where('status', 'Completed'); // Filter bookings by completed status
+        }])->get();
+
+        // Calculate average rating and completed bookings count for each worker
+        $this->workers->each(function ($worker) {
+            $bookings = $worker->bookings;
+
+            if ($bookings->isNotEmpty()) {
+                $worker->average_rating = $bookings->avg('rating');
+                $worker->completed_count = $bookings->count();
+            } else {
+                $worker->average_rating = 0; // Set rating to 0 if there are no bookings
+                $worker->completed_count = 0; // Set count to 0 if there are no bookings
+            }
+        });
+
         $this->setPricesForWorkers($this->workers);
     }
 }
+
 
 public function render()
 {

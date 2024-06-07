@@ -41,7 +41,7 @@
     @include('components.sign-up.input', [
         'type' => 'number',
         'name' => 'duration',
-        'label' => 'Duration',
+        'label' => 'Duration in minutes',
         'required' => true
     ])
 </div>
