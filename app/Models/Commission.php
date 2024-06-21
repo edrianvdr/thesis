@@ -29,4 +29,23 @@ class Commission extends Model
         return $this->belongsTo(WorkerProfile::class, 'worker_id');
     }
 
+    // Query
+    public static function getTotalEarningsByMonth()
+    {
+        return self::selectRaw('SUM(amount) as total_earnings, DATE_FORMAT(verified_at, "%M") as month_name')
+            ->where('is_verified', 1)
+            ->groupByRaw('DATE_FORMAT(verified_at, "%M")')
+            ->orderByRaw('MONTH(verified_at)')
+            ->get();
+    }
+
+    public static function getTotalEarnings()
+    {
+        return self::selectRaw('SUM(amount) as total_earnings')
+            ->where('is_verified', 1)
+            ->first();
+    }
+
+
+
 }

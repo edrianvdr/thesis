@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 
+use App\Models\AppSetting;
 use App\Models\Region;
 use App\Models\Province;
 use App\Models\City;
@@ -22,6 +23,9 @@ use Livewire\WithFileUploads;
 
 class SignUpWorker extends Component
 {
+    public $settings;
+    public $app_name;
+    public $app_logo;
 
     // For initial load
     public $categories;
@@ -42,6 +46,10 @@ class SignUpWorker extends Component
 
     public function mount()
     {
+        $this->settings = AppSetting::firstOrFail();
+        $this->app_name = $this->settings->app_name;
+        $this->app_logo = $this->settings->app_logo;
+
         // For category and service select tags
         $this->categories = Category::all();
         $this->services = collect();

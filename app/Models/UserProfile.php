@@ -24,7 +24,18 @@ class UserProfile extends Model
         'mobile_number',
         'profile_picture',
         'role_id',
+        'valid_id',
+        'selfie_with_valid_id',
+        'submitted_at',
+        'verified_at',
+        'is_verified',
     ];
+
+    protected $casts = [
+        'submitted_at' => 'datetime',
+        'verified_at' => 'datetime',
+    ];
+
 
     public $timestamps = [];
 

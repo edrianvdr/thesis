@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
-
+use App\Models\AppSetting;
 use App\Models\UserProfile;
 use App\Models\User;
 use App\Models\WorkerProfile;
@@ -18,6 +18,8 @@ class MyBookingsController extends Controller
 {
     public function my_bookings(Request $request)
     {
+        $settings = AppSetting::first();
+
         $user = Auth::user();
         $my_bookings_as_role = $request->query('my_bookings_as_role');
         $filter_by_status = $request->query('filter_by_status');
@@ -50,6 +52,7 @@ class MyBookingsController extends Controller
             $workerStatusCounts = Booking::countWorkerStatuses($user->id);
 
             return view('pages.my-bookings', [
+                'settings' => $settings,
                 'user' => $user,
                 'bookings' => $bookings,
                 'workerBookings' => $workerBookings,
@@ -73,6 +76,7 @@ class MyBookingsController extends Controller
         }
 
         return view('pages.my-bookings', [
+            'settings' => $settings,
             'user' => $user,
             'bookings' => $bookings,
             'workerBookings' => $workerBookings,

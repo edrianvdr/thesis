@@ -78,40 +78,56 @@
         </div>
     </div>
 
-    <div class="bg-white shadow-md rounded-md p-6 mt-8">
-        <h2 class="text-2xl font-bold mb-4">Book a Service</h2>
+    @if(Auth::user()->userProfile->is_verified == 1)
+        <div class="bg-white shadow-md rounded-md p-6 mt-8">
+            <h2 class="text-2xl font-bold mb-4">Book a Service</h2>
 
-        @if (session('success'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-                <strong class="font-bold">{{ session('success') }}</strong>
-            </div>
-        @endif
+            @if ($errors->any())
+                <div class="text-red-600 text-base" role="alert" aria-live="polite">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
-        <form action="/book" method="POST">
-            @csrf
-            {{-- Hidden fields to pass on controller --}}
-            <input type="hidden" name="user_id" value="{{ Auth::id() }}">
-            <input type="hidden" name="worker_id" value="{{ $workerProfile->id }}">
-            <input type="hidden" name="specific_service_id" value="{{ $selected_specific_service_id }}">
+            @if (session('success'))
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                    <strong class="font-bold">{{ session('success') }}</strong>
+                </div>
+            @endif
 
-            <div class="mb-4">
-                <label for="booking_date" class="block text-sm font-medium text-gray-700">Booking Date</label>
-                <input type="date" name="booking_date" id="booking_date" aria-label="Booking Date" aria-required="true" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-            </div>
-            <div class="mb-4">
-                <label for="booking_time" class="block text-sm font-medium text-gray-700">Booking Time</label>
-                <input type="time" name="booking_time" id="booking_time" aria-label="Booking Time" aria-required="true" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-            </div>
-            <div class="mb-4">
-                <label for="booking_notes" class="block text-sm font-medium text-gray-700">Notes</label>
-                <textarea rows="5" name="booking_notes" id="booking_notes" aria-label="Notes" aria-required="true" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
-            </div>
+            <form action="/book" method="POST">
+                @csrf
+                {{-- Hidden fields to pass on controller --}}
+                <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                <input type="hidden" name="worker_id" value="{{ $workerProfile->id }}">
+                <input type="hidden" name="specific_service_id" value="{{ $selected_specific_service_id }}">
 
-            <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                Book a Service
-            </button>
-        </form>
-    </div>
+                <div class="mb-4">
+                    <label for="booking_date" class="block text-sm font-medium text-gray-700">Booking Date</label>
+                    <input type="date" name="booking_date" id="booking_date" aria-label="Booking Date" aria-required="true" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+                <div class="mb-4">
+                    <label for="booking_time" class="block text-sm font-medium text-gray-700">Booking Time</label>
+                    <input type="time" name="booking_time" id="booking_time" aria-label="Booking Time" aria-required="true" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+                <div class="mb-4">
+                    <label for="booking_notes" class="block text-sm font-medium text-gray-700">Notes</label>
+                    <textarea rows="5" name="booking_notes" id="booking_notes" aria-label="Notes" aria-required="true" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Book a Service
+                </button>
+            </form>
+        </div>
+    @elseif(Auth::user()->userProfile->is_verified != 1)
+        <p class="bg-red-200 text-center mt-4 py-4">
+            Verify your account to book a service.
+        </p>
+    @endif
 
     <section class="bg-gray-100 py-12">
         <div class="container mx-auto px-4">

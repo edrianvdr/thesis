@@ -3,10 +3,23 @@
 namespace App\Livewire;
 use Illuminate\Support\Facades\Auth;
 
+use App\Models\AppSetting;
+
 use Livewire\Component;
 
 class Login extends Component
 {
+    public $settings;
+    public $app_name;
+    public $app_logo;
+
+    public function mount()
+    {
+        $this->settings = AppSetting::firstOrFail();
+        $this->app_name = $this->settings->app_name;
+        $this->app_logo = $this->settings->app_logo;
+    }
+
     public function render()
     {
         return view('livewire.login');

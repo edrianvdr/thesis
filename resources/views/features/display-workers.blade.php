@@ -5,30 +5,33 @@
         @foreach ($workers as $worker)
             {{-- 1 == Activated Worker Accounts --}}
             @if($worker->status == 1)
-                <form action="{{ route('track.worker.profile.view') }}" method="POST">
+            {{-- @if($worker->status == 1 && $worker->user->userProfile->is_verified == 1) --}}
+                <form action="{{ route('track.worker.profile.view') }}" method="POST" class="flex flex-col">
                     @csrf
                     <input type="hidden" name="user_id" value="{{ $worker->user_id }}">
                     <input type="hidden" name="worker_id" value="{{ $worker->id }}">
                     <input type="hidden" name="category_id" value="{{ $worker->category_id }}">
                     <input type="hidden" name="service_id" value="{{ $worker->service_id }}">
 
-                    <button role="link" type="submit" class="block bg-white border-2 border-white hover:border-blue-800 focus:border-blue-800 focus:outline-none rounded-lg shadow-lg transition duration-300">
-                        <div class="bg-white rounded-lg overflow-hidden">
+                    <button role="link" type="submit" class="block bg-white border-2 border-white hover:border-blue-800 focus:border-blue-800 focus:outline-none rounded-lg shadow-lg transition duration-300 flex-grow">
+                        <div class="bg-white rounded-lg overflow-hidden flex flex-col h-full">
                             <img class="w-full h-40 object-cover object-center"
                                 src="{{ asset('storage/' . $worker->user->userProfile->profile_picture) }}"
                                 alt="{{ $worker->user->userProfile->first_name }} {{ $worker->user->userProfile->last_name }}'s Profile Picture">
 
-                            <div class="p-4">
-                                <h3 class="text-lg font-bold mb-2 text-center">{{ $worker->user->userProfile->first_name }} {{ $worker->user->userProfile->last_name }}</h3>
-                                <p class="text-gray-600 text-center mb-2">{{ $worker->category->category }}</p>
-                                <p class="text-gray-600 text-center mb-4">{{ $worker->service->service }}</p>
-                                <p class="text-dark text-xl font-bold text-center text-blue-900  mb-2">
-                                    @if ($worker->lowest_price != $worker->highest_price)
-                                        ₱{{ $worker->lowest_price }} to ₱{{ $worker->highest_price }}
-                                    @else
-                                        ₱{{ $worker->lowest_price }}
-                                    @endif
-                                </p>
+                            <div class="p-4 flex-grow flex flex-col justify-between">
+                                <div>
+                                    <h3 class="text-lg font-bold mb-2 text-center">{{ $worker->user->userProfile->first_name }} {{ $worker->user->userProfile->last_name }}</h3>
+                                    <p class="text-gray-600 text-center mb-2">{{ $worker->category->category }}</p>
+                                    <p class="text-gray-600 text-center mb-4">{{ $worker->service->service }}</p>
+                                    <p class="text-dark text-xl font-bold text-center text-blue-900 mb-2">
+                                        @if ($worker->lowest_price != $worker->highest_price)
+                                            ₱{{ $worker->lowest_price }} to ₱{{ $worker->highest_price }}
+                                        @else
+                                            ₱{{ $worker->lowest_price }}
+                                        @endif
+                                    </p>
+                                </div>
 
                                 <div class="flex items-center text-center justify-center text-gray-600 mb-4">
                                     <svg class="w-5 h-5 text-center items-center" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -60,9 +63,9 @@
                                 @else
                                     <p class="text-gray-600 text-center mb-2">No ratings yet</p>
                                 @endif
-                                    @if ($worker->completed_count != 0)
-                                        <p>{{ $worker->completed_count }} {{ $worker->completed_count == 1 ? 'Completed Service' : 'Completed Services' }}</p>
-                                    @endif
+                                @if ($worker->completed_count != 0)
+                                    <p>{{ $worker->completed_count }} {{ $worker->completed_count == 1 ? 'Completed Service' : 'Completed Services' }}</p>
+                                @endif
                             </div>
                         </div>
                     </button>

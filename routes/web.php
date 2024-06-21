@@ -21,12 +21,15 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // [1] Admin
 Route::get('/admin/home', [AdminController::class, 'index'])->name('admin.home');
-    // [1] Worker Status Management
+    // [1] Account Verification
+    Route::post('/admin/account-verification/verify/{id}', [AdminController::class, 'verifyAccountVerification'])->name('verifyAccountVerification');
+    Route::post('/admin/account-verification/reject/{id}', [AdminController::class, 'rejectAccountVerification'])->name('rejectAccountVerification');
+    // [2] Worker Status Management
     // Deactivate Worker
     Route::post('/admin/deactivate-worker/{id}', [AdminController::class, 'deactivateWorker'])->name('admin.deactivateWorker');
     // Reactivate Worker
     Route::post('/admin/reactivate-worker/{id}', [AdminController::class, 'reactivateWorker'])->name('admin.reactivateWorker');
-    // [2] Commission Management
+    // [3] Commission Management
     // Request Commission Payment
     Route::post('/admin/request-commission-payment-all', [AdminController::class, 'requestCommissionPaymentAll'])->name('admin.requestCommissionPaymentAll');
     // Route::post('/admin/request-commission-payment-all/{id}', [AdminController::class, 'requestCommissionPayment'])->name('admin.requestCommissionPaymentAll');
@@ -35,6 +38,12 @@ Route::get('/admin/home', [AdminController::class, 'index'])->name('admin.home')
     Route::post('/admin/verify-commission/{id}', [AdminController::class, 'verifyCommission'])->name('admin.verifyCommission');
     // Reject Proof of Payment
     Route::post('/admin/reject-commission/{id}', [AdminController::class, 'rejectCommission'])->name('admin.rejectCommission');
+
+    // [5] App Settings
+    Route::post('/admin/app-settings/name', [AdminController::class, 'updateName'])->name('updateName');
+    Route::post('/admin/app-settings/logo', [AdminController::class, 'updateLogo'])->name('updateLogo');
+
+
 
 
 
@@ -71,7 +80,9 @@ Route::get('/my-account', [MyAccountController::class, 'index'])->name('my.accou
     Route::post('/update-profile', [MyAccountController::class, 'updateProfilePicture'])->name('update.profile');
     // [2] Update Password
     Route::post('/update-password', [MyAccountController::class, 'updatePassword'])->name('update.password');
-    // [3] Pay Commission
+    // [3] Account Verification
+    Route::post('/account-verification', [MyAccountController::class, 'verifyAccount'])->name('upload.account_verification');
+    // [4] Pay Commission
     Route::post('/upload-proof-of-payment', [MyAccountController::class, 'uploadProofOfPayment'])->name('upload.proof_of_payment');
-    // [4] Add New Specific Service
+    // [5] Add New Specific Service
     Route::post('/add-new-specific-service', [MyAccountController::class, 'addNewSpecificService'])->name('add.new_specific_service');

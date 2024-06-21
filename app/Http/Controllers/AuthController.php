@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
+use App\Models\AppSetting;
 use App\Models\UserProfile;
 use App\Models\User;
 use App\Models\WorkerProfile;
@@ -18,33 +19,51 @@ class AuthController extends Controller
     // Landing page
     public function index()
     {
-        return view('pages.landing');
+        $settings = AppSetting::first();
+
+        return view('pages.landing', [
+            'settings' => $settings
+        ]);
     }
 
     // Go to sign up
     public function sign_up()
     {
-        return view('auth.sign-up');
+        $settings = AppSetting::first();
+
+        return view('auth.sign-up', [
+            'settings' => $settings
+        ]);
     }
 
     // Go to sign up and Become a Worker
     public function signUpAndBecomeAWorker()
     {
-        return view('auth.sign-up-and-become-a-worker');
+        $settings = AppSetting::first();
+
+        return view('auth.sign-up-and-become-a-worker', [
+            'settings' => $settings
+        ]);
     }
 
     // Login
     public function login(Request $request)
     {
+        $settings = AppSetting::first();
 
         $credentials = $request->only('username', 'password');
 
         if (Auth::attempt($credentials)) {
             // $workers = WorkerProfile::with('user')->get();
             if (Auth::user()->profile->role_id == 1) {
-                return redirect()->route('admin.home', ['feature' => 1]);
+                return redirect()->route('admin.home', [
+                    'settings' => $settings,
+                    'feature' => 1
+                ]);
             }
-            return redirect()->route('home');
+            return redirect()->route('home', [
+                'settings' => $settings
+            ]);
         }
 
         $user = User::where('username', $credentials['username'])->first();
@@ -61,21 +80,11 @@ class AuthController extends Controller
     // Home
     public function home()
     {
-        // $workers = WorkerProfile::with(['user.userProfile', 'bookings'])->get();
+        $settings = AppSetting::first();
 
-        // $workers->each(function ($worker) {
-        //     $worker->average_rating = $worker->bookings()->avg('rating');
-        // });
-
-        // $bookings = Booking::all();
-
-        // return view('home', [
-        //     'workers' => $workers,
-        //     'bookings' => $bookings
-        // ]);
-
-        return view('pages.home');
-
+        return view('pages.home', [
+            'settings' => $settings
+        ]);
     }
 
     // Logout
@@ -93,7 +102,11 @@ class AuthController extends Controller
     // Go to sign up Worker
     public function sign_up_worker()
     {
-        return view('auth.sign-up-worker');
+        $settings = AppSetting::first();
+
+        return view('auth.sign-up-worker', [
+            'settings' => $settings
+        ]);
     }
 
     public function becomeWorker(Request $request)
@@ -178,29 +191,11 @@ class AuthController extends Controller
      */
     public function showWorkerProfile($userId, $workerProfileId)
     {
-        // $user = Auth::user();
-        // $worker = User::findOrFail($userId);
-
-        // // Fetch the worker's details from user_profiles table
-        // $userProfile = UserProfile::where('user_id', $userId)->first();
-
-        // // Fetch the worker's details from worker_profiles table
-        // $workerProfile = WorkerProfile::where('id', $workerProfileId)->first();
-
-        // // Assuming the working_days column contains a string like "1,1,1,0,0,0,0"
-        // $workingDaysArray = explode(',', $workerProfile->working_days);
-
-        // $daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        // $availableDays = [];
-
-        // foreach ($workingDaysArray as $index => $isAvailable) {
-        //     if ($isAvailable == 1) {
-        //         $availableDays[] = $daysOfWeek[$index];
-        //     }
-        // }
+        $settings = AppSetting::first();
 
         // return view('pages.worker-profile', compact('user', 'worker', 'userProfile', 'workerProfile', 'availableDays'));
         return view('pages.worker-profile', [
+            'settings' => $settings,
             'userId' => $userId,
             'workerProfileId' => $workerProfileId,
         ]);
@@ -244,22 +239,32 @@ class AuthController extends Controller
         public function book(Request $request)
         {
             // Validate the incoming request data
+            // $validatedData = $request->validate([
+            //     'user_id' => 'required',
+            //     'worker_id' => 'required',
+            //     'specific_service_id' => 'required',
+            //     'booking_date' => 'required|date|after:today',
+            //     'booking_time' => 'required',
+            //     'booking_notes' => 'required|string',
+            // ]);
             $validatedData = $request->validate([
                 'user_id' => 'required',
                 'worker_id' => 'required',
                 'specific_service_id' => 'required',
-                'booking_date' => 'required|date',
+                'booking_date' => 'required|date|after:today',
                 'booking_time' => 'required',
                 'booking_notes' => 'required|string',
+            ], [
+                'user_id.required' => 'User ID is required',
+                'worker_id.required' => 'Worker ID is required',
+                'specific_service_id.required' => 'Specific Service ID is required',
+                'booking_date.required' => 'Booking date is required',
+                'booking_date.date' => 'Booking date must be a valid date',
+                'booking_date.after' => 'Booking date must be after today',
+                'booking_time.required' => 'Booking time is required',
+                'booking_notes.required' => 'Booking notes are required',
+                'booking_notes.string' => 'Booking notes must be a string',
             ]);
-            // dd([
-            //     'user_id' => $request->user_id,
-            //     'worker_id' => $request->worker_id,
-            //     'specific_service_id' => $request->specific_service_id,
-            //     'booking_time' => $request->booking_time,
-            //     'booking_notes' => $request->booking_notes,
-            // ]);
-
 
             // Insert into bookings table
             $booking = new Booking();
@@ -275,4 +280,5 @@ class AuthController extends Controller
 
             return redirect()->back()->with('success', 'You\'ve successfully booked a service!');
         }
+
     }

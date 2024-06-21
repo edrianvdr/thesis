@@ -3,11 +3,12 @@
         <div class="text-white text-xl font-bold">
             <a
                 href="{{ route('home') }}"
-                class="flex items-center text-white text-xl font-bold px-2 border border-blue-800 focus:border-white focus:outline-none"
+                {{-- class="flex items-center text-white text-xl font-bold px-2 border border-blue-800 focus:border-white focus:outline-none" --}}
+                class="flex items-center bg-white text-blue-800 text-xl font-bold py-1 px-4 focus:outline-none"
                 accesskey="h"
                 >
-                <img class="h-8 mr-2" src="{{ asset('images/Logo v2.png') }}" alt="{{ config('app.name') }} logo">
-                    {{ config('app.name') }}
+                <img class="h-8 mr-2" src="{{ asset('storage/' . $settings->app_logo) }}" alt="{{ $settings->app_name }} logo">
+                {{ $settings->app_name }}
             </a>
         </div>
         <div>

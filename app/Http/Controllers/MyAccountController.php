@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
+use App\Models\AppSetting;
 use App\Models\UserProfile;
 use App\Models\User;
 use App\Models\WorkerProfile;
@@ -20,13 +21,17 @@ class MyAccountController extends Controller
 {
     public function index(Request $request)
     {
+        $settings = AppSetting::first();
         $feature = $request->query('feature');
+        $profile = Auth::user()->profile;
 
         // Admin & Client
         if (Auth::user()->userProfile->role_id != 3)
         {
             return view('pages.my-account', [
-                'feature' => $feature
+                'settings' => $settings,
+                'feature' => $feature,
+                'profile' => $profile
             ]);
         }
         // Worker
@@ -43,9 +48,11 @@ class MyAccountController extends Controller
             $specificServices = Auth::user()->workerProfile->specificServices;
 
             return view('pages.my-account', [
+                'settings' => $settings,
                 'feature' => $feature,
                 'commissions' => $commissions,
-                'specificServices' => $specificServices
+                'specificServices' => $specificServices,
+                'profile' => $profile
             ]);
         }
     }
@@ -96,7 +103,49 @@ class MyAccountController extends Controller
         return back()->with('success', 'Password successfully updated.');
     }
 
-    // [3] Pay Commission
+    // [3] Account Verification
+    public function verifyAccount(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'valid_id' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'selfie_with_valid_id' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+        ]);
+
+        // Get the logged-in user
+        $user = Auth::user();
+        $profile = $user->profile;
+
+        // Handle the valid ID upload
+        if ($request->hasFile('valid_id')) {
+            // Store the file and get its path
+            $validIdPath = $request->file('valid_id')->store('valid_ids', 'public');
+
+            // Update the valid_id field in the user_profiles table
+            $profile->valid_id = $validIdPath;
+        }
+
+        // Handle the selfie with valid ID upload
+        if ($request->hasFile('selfie_with_valid_id')) {
+            // Store the file and get its path
+            $selfieWithValidIdPath = $request->file('selfie_with_valid_id')->store('selfie_with_valid_ids', 'public');
+
+            // Update the selfie_with_valid_id field in the user_profiles table
+            $profile->selfie_with_valid_id = $selfieWithValidIdPath;
+        }
+
+        // Save the profile if any changes were made
+        if ($profile->isDirty()) {
+            $profile->submitted_at = now();
+            $profile->is_verified = 0;
+            $profile->save();
+        }
+
+        // Redirect back to the previous page
+        return back()->with('success', 'Account verification will be reviewed within 24 hours.');
+    }
+
+    // [4] Pay Commission
     public function uploadProofOfPayment(Request $request)
     {
         foreach ($request->allFiles() as $key => $file) {
@@ -116,7 +165,7 @@ class MyAccountController extends Controller
         return back()->with('success', 'Proof of payment uploaded successfully.');
     }
 
-    // [4] Add New Specific Service
+    // [5] Add New Specific Service
     public function addNewSpecificService(Request $request)
     {
         // Validate the request data

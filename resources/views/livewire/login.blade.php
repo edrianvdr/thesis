@@ -1,6 +1,6 @@
 <div>
     <div class="flex items-center justify-center mt-4">
-        <img class="mx-auto my-4 max-w-full max-h-48" src="{{ asset('images/Logo v1.png') }}" alt="{{ config('app.name') }} logo">
+    <img class="mx-auto my-4 max-w-full max-h-48" src="{{ asset('storage/' . $settings->app_logo) }}" alt="{{ $settings->app_name }} logo">
     </div>
     <div>
         <h1 class="text-center text-3xl font-bold my-4">Login</h1>

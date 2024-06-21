@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 
+use App\Models\AppSetting;
 use App\Models\Gender;
 use App\Models\MaritalStatus;
 use App\Models\Region;
@@ -18,6 +19,10 @@ use Livewire\WithFileUploads;
 
 class SignUp extends Component
 {
+    public $settings;
+    public $app_name;
+    public $app_logo;
+
     use WithFileUploads;
 
     public function render()
@@ -33,6 +38,10 @@ class SignUp extends Component
 
     public function mount()
     {
+        $this->settings = AppSetting::firstOrFail();
+        $this->app_name = $this->settings->app_name;
+        $this->app_logo = $this->settings->app_logo;
+
         $this->genders = Gender::all();
         $this->marital_statuses = MaritalStatus::all();
         $this->regions = Region::all();
@@ -73,6 +82,9 @@ class SignUp extends Component
     public $username;
     public $password;
     public $confirm_password;
+
+    public $valid_id;
+    public $selfie_with_valid_id;
 
     public function sign_up()
     {
@@ -120,6 +132,16 @@ class SignUp extends Component
             $path = $this->profile_picture->store('profile_pictures', 'public');
         }
 
+        // Account Verification
+        $validIdPath = NULL;
+        if ($this->valid_id) {
+            $validIdPath = $this->valid_id->store('valid_ids', 'public');
+        }
+        $selfieWithValidIdPath = NULL;
+        if ($this->selfie_with_valid_id) {
+            $selfieWithValidIdPath = $this->selfie_with_valid_id->store('selfie_with_valid_ids', 'public');
+        }
+
         // Insert into user_profiles table
         $user->profile()->create([
             'user_id' => $user_id,
@@ -134,6 +156,10 @@ class SignUp extends Component
             'mobile_number' => $this->mobile_number,
             'profile_picture' => $path,
             'role_id' => 2,
+            'valid_id' => $validIdPath,
+            'selfie_with_valid_id' => $selfieWithValidIdPath,
+            'submitted_at' => now(),
+            'is_verified' => 0,
         ]);
 
         // Insert into addresses table

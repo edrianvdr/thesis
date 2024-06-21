@@ -13,19 +13,17 @@ class SignUpController extends Controller
 
     public function sign_up()
     {
-        return view('auth.sign-up');
+        $settings = AppSetting::first();
+        return view('auth.sign-up', [
+            'settings' => $settings
+        ]);
     }
 
     public function sign_up_worker()
     {
-        return view('auth.sign-up-worker');
+        $settings = AppSetting::first();
+        return view('auth.sign-up-worker', [
+            'settings' => $settings
+        ]);
     }
-    // public function sign_up_worker(Request $request)
-    // {
-    //     $userId = $request->query('user_id');
-
-    //     // Pass the user ID to the view
-    //     return view('auth.sign-up-worker', compact('userId'));
-    // }
-
 }

@@ -103,6 +103,9 @@ class SignUpAndBecomeAWorker extends Component
     public $password;
     public $confirm_password;
 
+    public $valid_id;
+    public $selfie_with_valid_id;
+
     // Wir model binding
     public $specific_service;
     public $price;
@@ -111,7 +114,7 @@ class SignUpAndBecomeAWorker extends Component
     public $working_days = [];
     public $start_time;
     public $end_time;
-    public $valid_id;
+    public $worker_valid_id;
     public $resume;
     public $working_days_string;
 
@@ -181,6 +184,16 @@ class SignUpAndBecomeAWorker extends Component
             $path = $this->profile_picture->store('profile_pictures', 'public');
         }
 
+        // Account Verification
+        $validIdPath = NULL;
+        if ($this->valid_id) {
+            $validIdPath = $this->valid_id->store('valid_ids', 'public');
+        }
+        $selfieWithValidIdPath = NULL;
+        if ($this->selfie_with_valid_id) {
+            $selfieWithValidIdPath = $this->selfie_with_valid_id->store('selfie_with_valid_ids', 'public');
+        }
+
         // Insert into user_profiles table
         $user->profile()->create([
             'user_id' => $user_id,
@@ -195,6 +208,10 @@ class SignUpAndBecomeAWorker extends Component
             'mobile_number' => $this->mobile_number,
             'profile_picture' => $path,
             'role_id' => 3,
+            'valid_id' => $validIdPath,
+            'selfie_with_valid_id' => $selfieWithValidIdPath,
+            'submitted_at' => now(),
+            'is_verified' => 0,
         ]);
 
         // Insert into addresses table
@@ -218,8 +235,6 @@ class SignUpAndBecomeAWorker extends Component
             'working_days' => $working_days_string,
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
-            'valid_id' => $this->valid_id,
-            'resume' => $this->resume,
             'status' => 1,
         ]);
 

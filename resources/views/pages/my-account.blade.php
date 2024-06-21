@@ -28,6 +28,11 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('my.account', ['feature' => 3]) }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">
+                        Account Verification
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('logout') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 rounded" accesskey="l">
                         Logout
                     </a>
@@ -38,12 +43,12 @@
                 <h3 class="text-lg font-bold mt-4 mb-2">Worker Settings</h3>
                 <ul class="space-y-2">
                     <li>
-                        <a href="{{ route('my.account', ['feature' => 3]) }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">
+                        <a href="{{ route('my.account', ['feature' => 4]) }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">
                             Pay Commission
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('my.account', ['feature' => 4]) }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">
+                        <a href="{{ route('my.account', ['feature' => 5]) }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">
                             Add New Specific Service
                         </a>
                     </li>
@@ -57,8 +62,10 @@
             @elseif ($feature == 2)
                 @include('pages.my-account-change-password')
             @elseif ($feature == 3)
-                @include('pages.my-account-pay-commission')
+                @include('pages.my-account-account-verification')
             @elseif ($feature == 4)
+                @include('pages.my-account-pay-commission')
+            @elseif ($feature == 5)
                 @include('pages.my-account-add-new-specific-service')
             @endif
         </section>
